@@ -6,7 +6,19 @@
   html {
     @apply text-gray-100;
   }
+  h1 {
+    @apply text-8xl font-bold;
+  }
+  h2 {
+    @apply text-2xl font-medium text-gray-300;
+  }
+  p {
+    @apply text-lg font-light text-gray-400;
+  }
   .center {
     @apply flex items-center justify-center;
+  }
+  .keyboard {
+    @apply center h-16 w-12 rounded bg-gray-700 transition-transform hover:scale-110 hover:bg-gray-600;
   }
 }
