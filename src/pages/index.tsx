@@ -213,6 +213,15 @@ const Home = ({ hex }: IProps) => {
             </div>
           </div>
         </div>
+        <div className="absolute bottom-6 left-6 px-3 text-gray-400 transition-all hover:-translate-y-1 hover:rotate-2 hover:text-gray-200">
+          <a
+            href="https://github.com/tedspare/hexle"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Code
+          </a>
+        </div>
       </main>
     </>
   );
