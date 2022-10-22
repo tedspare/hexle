@@ -184,7 +184,7 @@ const Home = ({ hex }: IProps) => {
       </Head>
 
       <main style={{ backgroundColor: `#${hex}` }}>
-        <div className="center h-screen w-screen flex-col space-y-20 p-4">
+        <div className="center h-screen w-screen flex-col space-y-4 p-4 sm:space-y-20 p-4">
           <div className="space-y-2 text-center">
             <h1 style={{ color: contrastColor }}>Hexle</h1>
             <h2 style={{ color: contrastColor }}>
@@ -260,7 +260,7 @@ const Home = ({ hex }: IProps) => {
           </div>
         </div>
         <div
-          className="absolute bottom-6 left-6 cursor-pointer px-3 transition-all hover:-translate-y-1"
+          className="hidden sm:block absolute bottom-6 left-6 cursor-pointer px-3 transition-all hover:-translate-y-1"
           style={{ color: contrastColor }}
         >
           <a
