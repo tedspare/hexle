@@ -161,7 +161,7 @@ const Home = ({ hex }: IProps) => {
       </Head>
 
       <main className="bg-black">
-        <div className="center h-screen w-screen flex-col space-y-20 p-4">
+        <div className="center h-screen w-screen flex-col space-y-4 p-4 sm:space-y-20">
           <div className="space-y-2 text-center">
             <h1 style={{ color: `#${hex}` }}>Hexle</h1>
             <h2>Guess the color of this title to win.</h2>
@@ -213,7 +213,7 @@ const Home = ({ hex }: IProps) => {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-6 left-6 px-3 text-gray-400 transition-all hover:-translate-y-1 hover:rotate-2 hover:text-gray-200">
+        <div className="absolute bottom-6 left-6 hidden px-3 text-gray-400 transition-all hover:-translate-y-1 hover:rotate-2 hover:text-gray-200 sm:block">
           <a
             href="https://github.com/tedspare/hexle"
             target="_blank"
