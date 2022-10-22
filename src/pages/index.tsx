@@ -5,6 +5,16 @@ import { useCallback, useEffect, useState } from "react";
 const GRID_SIZE = 6;
 const TIMEOUT_SHORT = 100; // milliseconds
 
+// Types
+enum HINT {
+  DOWN = -1,
+  HIT,
+  UP,
+}
+
+type Guess = string; // TODO: make hex type
+type GuessArray = Array<Array<HINT | Guess | undefined>>;
+
 // Predefined objects
 const row = Array(GRID_SIZE).fill("");
 const grid = Array(GRID_SIZE).fill(row);
@@ -15,20 +25,30 @@ const hexes = Array(16)
 // Difference between two hexadecimal numbers
 const getDistance = (guess: any, answer: any) => {
   const distance = parseInt(guess, 16) - parseInt(answer, 16);
-  const hotColdColor =
-    distance < -5
-      ? "bg-blue-600/50"
-      : distance < 0
-      ? "bg-blue-600/30"
-      : distance == 0
-      ? "bg-green-600/50"
-      : distance > 5
-      ? "bg-red-600/50"
-      : "bg-red-600/30";
-  return hotColdColor;
+  return distance < 0 ? HINT.UP : distance == 0 ? HINT.HIT : HINT.DOWN;
 };
 
-type GuessArray = Array<Array<string>>;
+const hexToRgb = (hex: string) => {
+  const hexArray = hex.split("") as [
+    string,
+    string,
+    string,
+    string,
+    string,
+    string
+  ];
+  return {
+    r: parseInt(hexArray[0] + hexArray[1] + "", 16),
+    g: parseInt(hexArray[2] + hexArray[3] + "", 16),
+    b: parseInt(hexArray[4] + hexArray[5] + "", 16),
+  };
+};
+
+// Determine contrast color as white or black on hex code background
+const getContrastColor = (hex: string) => {
+  const { r, g, b } = hexToRgb(hex);
+  return r * 0.299 + g * 0.587 + b * 0.114 > 150 ? "black" : "white";
+};
 
 interface IProps {
   hex: string;
@@ -41,16 +61,19 @@ interface IProps {
 const Home = ({ hex }: IProps) => {
   // Initialize guess arrays to 6x6 empty strings
   const [guesses, setGuesses] = useState<GuessArray>(
-    [...Array(6)].map((_) => [...Array(6)].map((_) => ""))
+    [...Array(6)].map(() => [...Array(6)].map(() => undefined))
   );
   const [distances, setDistances] = useState<GuessArray>(
-    [...Array(6)].map((_) => [...Array(6)].map((_) => ""))
+    [...Array(6)].map(() => [...Array(6)].map(() => undefined))
   );
 
   // Track row, column, and pressed key
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
   const [keystroke, setKeystroke] = useState<string>("");
+
+  // Contrast color
+  const contrastColor = getContrastColor(hex);
 
   // To highlight the focused cell
   const isActive = useCallback(
@@ -91,7 +114,7 @@ const Home = ({ hex }: IProps) => {
   // To clear the active cell when the user presses backspace
   const handleBackspace = (row: number, column: number) => {
     setGuesses((prev) => {
-      prev[row]![Math.max(column, 0)] = "";
+      prev[row]![Math.max(column, 0)] = undefined;
       return prev;
     });
     setCurrentColumn((prev) => Math.max(prev - 1, 0));
@@ -160,25 +183,47 @@ const Home = ({ hex }: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="bg-black">
+      <main style={{ backgroundColor: `#${hex}` }}>
         <div className="center h-screen w-screen flex-col space-y-20 p-4">
           <div className="space-y-2 text-center">
-            <h1 style={{ color: `#${hex}` }}>Hexle</h1>
-            <h2>Guess the color of this title to win.</h2>
-            <p>Red means too high. Bright red means way too high. Etc.</p>
+            <h1 style={{ color: contrastColor }}>Hexle</h1>
+            <h2 style={{ color: contrastColor }}>
+              Guess the hex code of the color to win.
+            </h2>
           </div>
           {/* Guesses grid */}
-          <div className="center flex-col space-y-2">
+          <div className="center flex-col space-y-4">
             {grid.map((row: string[], i: number) => (
-              <div key={i} className="center space-x-2">
+              <div key={i} className="center space-x-4">
                 {row.map((_, j: number) => (
                   <div
                     key={`${i}-${j}`}
-                    className={`center h-12 w-12 rounded border ${
+                    className={`center h-10 w-10 border-2 ${
+                      contrastColor === "black"
+                        ? "border-black"
+                        : "border-white"
+                    } font-bold`}
+                    style={
                       isActive(i, j)
-                        ? "scale-110 border-gray-400"
-                        : "border-gray-600"
-                    } ${distances[i]![j]} transition-transform`}
+                        ? { color: contrastColor }
+                        : distances[i]![j] === HINT.DOWN
+                        ? {
+                            borderLeft: 0,
+                            borderRight: 0,
+                            borderTop: 0,
+                            color: contrastColor,
+                          }
+                        : distances[i]![j] === HINT.UP
+                        ? {
+                            borderLeft: 0,
+                            borderRight: 0,
+                            borderBottom: 0,
+                            color: contrastColor,
+                          }
+                        : distances[i]![j] === HINT.HIT
+                        ? { color: `#${hex}`, backgroundColor: contrastColor }
+                        : { border: 0, color: contrastColor }
+                    }
                   >
                     <span>{guesses?.[i]?.[j]}</span>
                   </div>
@@ -188,32 +233,36 @@ const Home = ({ hex }: IProps) => {
           </div>
           {/* Keyboard */}
           <div className="center max-w-xl flex-wrap gap-2">
-            {hexes.map((hex: string, i: number) => (
+            {hexes.map((_hex: string, i: number) => (
               <div
                 key={i}
-                onClick={() => handleKeystroke(currentRow, currentColumn, hex)}
-                className={`keyboard ${
-                  keystroke === hex ? "!bg-gray-500" : ""
-                }`}
+                onClick={() => handleKeystroke(currentRow, currentColumn, _hex)}
+                className={`keyboard px-2`}
+                style={{ color: `#${hex}`, backgroundColor: contrastColor }}
               >
-                <span>{hex}</span>
+                <span>{_hex}</span>
               </div>
             ))}
             <div
               onClick={() => handleBackspace(currentRow, currentColumn)}
               className="keyboard px-2"
+              style={{ color: `#${hex}`, backgroundColor: contrastColor }}
             >
               ←
             </div>
             <div
               onClick={() => handleEnter(currentRow, guesses)}
-              className="keyboard px-2"
+              className={`keyboard px-2 bg-${contrastColor}`}
+              style={{ color: `#${hex}`, backgroundColor: contrastColor }}
             >
               Enter
             </div>
           </div>
         </div>
-        <div className="absolute bottom-6 left-6 px-3 text-gray-400 transition-all hover:-translate-y-1 hover:rotate-2 hover:text-gray-200">
+        <div
+          className="absolute bottom-6 left-6 cursor-pointer px-3 transition-all hover:-translate-y-1"
+          style={{ color: contrastColor }}
+        >
           <a
             href="https://github.com/tedspare/hexle"
             target="_blank"
@@ -232,7 +281,7 @@ export default Home;
 // To generate a random color
 export async function getServerSideProps() {
   const hex = [...Array(GRID_SIZE)]
-    .map((_) => (~~(Math.random() * 16)).toString(16))
+    .map(() => (~~(Math.random() * 16)).toString(16))
     .join("");
 
   return {
