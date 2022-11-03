@@ -197,8 +197,8 @@ const Home = ({ hex }: IProps) => {
         <meta name="description" content="Guess the hex code from a color" />
         <Favicon color={color} contrastColor={contrastColor} />
         <meta
-            property="og:image"
-            content={`/api/og?bg=${color}&color=${contrastColor}`}
+          property="og:image"
+          content={`/api/og?bg=${color}&color=${contrastColor}`}
         />
       </Head>
       <main
