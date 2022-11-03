@@ -185,9 +185,8 @@ const Home = ({ hex }: IProps) => {
         <meta name="description" content="Guess the hex code from a color" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main style={{ backgroundColor: color }}>
-        <div className="center h-screen w-screen flex-col space-y-20 p-4">
+      <main className="bg-black">
+        <div className="center h-screen w-screen flex-col space-y-4 p-4 sm:space-y-20">
           <div className="space-y-2 text-center">
             <h1 style={{ color: contrastColor }}>Hexle</h1>
             <h2 style={{ color: contrastColor }}>
@@ -265,7 +264,7 @@ const Home = ({ hex }: IProps) => {
           </div>
         </div>
         <div
-          className="absolute bottom-6 left-6 cursor-pointer px-3 transition-all hover:-translate-y-1"
+          className="absolute bottom-6 left-6 cursor-pointer px-3 transition-all hover:-translate-y-1 sm:block"
           style={{ color: contrastColor }}
         >
           <a
