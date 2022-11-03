@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
+import Favicon from "../components/favicon";
 
 // Constants
 const GRID_SIZE = 6;
@@ -194,7 +195,11 @@ const Home = ({ hex }: IProps) => {
       <Head>
         <title>Hexle</title>
         <meta name="description" content="Guess the hex code from a color" />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon color={color} contrastColor={contrastColor} />
+        <meta
+            property="og:image"
+            content={`/api/og?bg=${color}&color=${contrastColor}`}
+        />
       </Head>
       <main
         style={{ backgroundColor: color }}
