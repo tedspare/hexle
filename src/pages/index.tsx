@@ -208,7 +208,7 @@ const Home = ({ hex }: IProps) => {
             <a href={"/"}>Hexle</a>
           </h1>
           <div
-            className={`center flex h-6 w-6 cursor-pointer rounded-full border-2`}
+            className={`center flex h-6 w-6 cursor-pointer rounded-full border-2 text-xs font-bold`}
             style={{ borderColor: contrastColor, color: contrastColor }}
             onClick={handleGetInfo}
           >
