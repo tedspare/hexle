@@ -33,8 +33,9 @@ export default function handler(req: NextRequest) {
         >
           <div
             style={{
-              fontSize: 200,
+              fontSize: 300,
               fontStyle: "normal",
+              fontWeight: "bold",
               color: color,
               whiteSpace: "pre-wrap",
             }}
