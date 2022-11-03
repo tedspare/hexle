@@ -31,7 +31,7 @@ const Favicon = ({ color, contrastColor }: IProps) => {
 
   return (
     <>
-      {/*<link rel="icon" href="/favicon.ico" sizes={"any"} />*/}
+      <link rel="icon" href="/favicon.ico" sizes={"any"} />
       <link rel="icon" href={encodeSvg(svg)} type="image/svg+xml" />
     </>
   );
