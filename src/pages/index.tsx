@@ -86,6 +86,14 @@ const Home = ({ hex }: IProps) => {
     [currentRow, currentColumn]
   );
 
+  // Handler for info click in header
+  const handleGetInfo = () => {
+    // TODO: build modal or toast or smthn to handle this extra ui
+    alert(
+      "Welcome to Hexle!\nGuess the hex code of the background color to win.\n\nCheck out the code on Github: https://github.com/tedspare/hexle"
+    );
+  };
+
   // To evaluate the row when the user presses the enter key
   const handleEnter = (row: number, guesses: GuessArray) => {
     // Ensure all cells are filled
@@ -188,95 +196,91 @@ const Home = ({ hex }: IProps) => {
         <meta name="description" content="Guess the hex code from a color" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main style={{ backgroundColor: color }}>
-        <div className="center h-screen w-screen flex-col space-y-4 p-4 p-4 sm:space-y-20">
-          <div className="space-y-2 text-center">
-            <h1 style={{ color: contrastColor }}>Hexle</h1>
-            <h2 style={{ color: contrastColor }}>
-              Guess the hex code of the color to win.
-            </h2>
-          </div>
-          {/* Guesses grid */}
-          <div className="center flex-col space-y-4">
-            {grid.map((row: string[], i: number) => (
-              <div key={i} className="center space-x-4">
-                {row.map((_, j: number) => (
-                  <div
-                    key={`${i}-${j}`}
-                    className={`center h-10 w-10 border-2 ${
-                      contrastColor === "black"
-                        ? "border-black"
-                        : "border-white"
-                    } font-bold`}
-                    style={
-                      isActive(i, j)
-                        ? { color: contrastColor }
-                        : distances[i]![j] === HINT.DOWN
-                        ? {
-                            borderLeft: 0,
-                            borderRight: 0,
-                            borderTop: 0,
-                            color: contrastColor,
-                          }
-                        : distances[i]![j] === HINT.UP
-                        ? {
-                            borderLeft: 0,
-                            borderRight: 0,
-                            borderBottom: 0,
-                            color: contrastColor,
-                          }
-                        : distances[i]![j] === HINT.HIT
-                        ? { color: color, backgroundColor: contrastColor }
-                        : { border: 0, color: contrastColor }
-                    }
-                  >
-                    <span>{guesses?.[i]?.[j]}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          {/* Keyboard */}
-          <div className="center max-w-xl flex-wrap gap-2">
-            {hexes.map((hexChar: string, i: number) => (
-              <div
-                key={i}
-                onClick={() =>
-                  handleKeystroke(currentRow, currentColumn, hexChar)
-                }
-                className={`keyboard px-2`}
-                style={{ color: color, backgroundColor: contrastColor }}
-              >
-                <span>{hexChar}</span>
-              </div>
-            ))}
-            <div
-              onClick={() => handleBackspace(currentRow, currentColumn)}
-              className="keyboard px-2"
-              style={{ color: color, backgroundColor: contrastColor }}
-            >
-              ←
-            </div>
-            <div
-              onClick={() => handleEnter(currentRow, guesses)}
-              className={`keyboard px-2 bg-${contrastColor}`}
-              style={{ color: color, backgroundColor: contrastColor }}
-            >
-              Enter
-            </div>
-          </div>
-        </div>
-        <div
-          className="absolute bottom-6 left-6 hidden cursor-pointer px-3 transition-all hover:-translate-y-1 sm:block sm:block"
-          style={{ color: contrastColor }}
-        >
-          <a
-            href="https://github.com/tedspare/hexle"
-            target="_blank"
-            rel="noopener noreferrer"
+      <main
+        style={{ backgroundColor: color }}
+        className={
+          "flex h-full min-h-screen flex-col items-center overflow-y-scroll"
+        }
+      >
+        {/* Header with title and info */}
+        <header className="sticky top-0 flex w-screen items-center justify-between px-4 py-2">
+          <h1 style={{ color: contrastColor }}>
+            <a href={"/"}>Hexle</a>
+          </h1>
+          <div
+            className={`center flex h-6 w-6 cursor-pointer rounded-full border-2`}
+            style={{ borderColor: contrastColor, color: contrastColor }}
+            onClick={handleGetInfo}
           >
-            Code
-          </a>
+            i
+          </div>
+        </header>
+        {/* Guesses grid */}
+        <div className="center flex-grow flex-col space-y-4">
+          {grid.map((row: string[], i: number) => (
+            <div key={i} className="center space-x-4">
+              {row.map((_, j: number) => (
+                <div
+                  key={`${i}-${j}`}
+                  className={`center h-8 w-8 border-2 ${
+                    contrastColor === "black" ? "border-black" : "border-white"
+                  } font-bold`}
+                  style={
+                    isActive(i, j)
+                      ? { color: contrastColor }
+                      : distances[i]![j] === HINT.DOWN
+                      ? {
+                          borderLeft: 0,
+                          borderRight: 0,
+                          borderTop: 0,
+                          color: contrastColor,
+                        }
+                      : distances[i]![j] === HINT.UP
+                      ? {
+                          borderLeft: 0,
+                          borderRight: 0,
+                          borderBottom: 0,
+                          color: contrastColor,
+                        }
+                      : distances[i]![j] === HINT.HIT
+                      ? { color: color, backgroundColor: contrastColor }
+                      : { border: 0, color: contrastColor }
+                  }
+                >
+                  <span>{guesses?.[i]?.[j]}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        {/* Keyboard */}
+        <div className="center sticky bottom-0 max-w-lg flex-wrap gap-2 p-4 ">
+          {hexes.map((hexChar: string, i: number) => (
+            <div
+              key={i}
+              onClick={() =>
+                handleKeystroke(currentRow, currentColumn, hexChar)
+              }
+              className={`keyboard`}
+              style={{ color: color, backgroundColor: contrastColor }}
+            >
+              <span>{hexChar}</span>
+            </div>
+          ))}
+          <div
+            onClick={() => handleBackspace(currentRow, currentColumn)}
+            className="keyboard"
+            style={{ color: color, backgroundColor: contrastColor }}
+          >
+            ←
+          </div>
+          <div
+            onClick={() => handleEnter(currentRow, guesses)}
+            className={`keyboard text-xs`}
+            style={{ color: color, backgroundColor: contrastColor }}
+          >
+            Enter
+          </div>
         </div>
       </main>
     </>

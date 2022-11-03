@@ -4,19 +4,16 @@
 
 @layer base {
   h1 {
-    @apply text-8xl font-bold;
+    @apply text-2xl font-bold;
   }
   h2 {
-    @apply text-2xl font-medium;
+    @apply text-lg font-medium;
   }
   p,
-  a {
-    @apply font-medium;
-  }
   .center {
     @apply flex items-center justify-center;
   }
   .keyboard {
-    @apply center h-16 w-12 cursor-pointer font-bold transition-all hover:scale-110;
+    @apply center h-10 w-10 cursor-pointer font-bold transition-all hover:scale-110;
   }
 }
