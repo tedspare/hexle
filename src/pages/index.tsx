@@ -67,6 +67,9 @@ const Home = ({ hex }: IProps) => {
     [...Array(6)].map(() => [...Array(6)].map(() => undefined))
   );
 
+  // The hex as a hex code string
+  const color = `#${hex}`;
+
   // Track row, column, and pressed key
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
@@ -98,12 +101,12 @@ const Home = ({ hex }: IProps) => {
 
     // Win
     if (guesses[row]?.join("") === hex) {
-      alert(`You win! The hex was #${hex}.`);
+      alert(`You win! The hex was ${color}`);
     }
 
     // Lose
     if (row === GRID_SIZE - 1) {
-      alert(`You lose! The hex was #${hex}.`);
+      alert(`You lose! The hex was ${color}.`);
     }
 
     // Move to next row and reset column
@@ -183,7 +186,7 @@ const Home = ({ hex }: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main style={{ backgroundColor: `#${hex}` }}>
+      <main style={{ backgroundColor: color }}>
         <div className="center h-screen w-screen flex-col space-y-20 p-4">
           <div className="space-y-2 text-center">
             <h1 style={{ color: contrastColor }}>Hexle</h1>
@@ -221,7 +224,7 @@ const Home = ({ hex }: IProps) => {
                             color: contrastColor,
                           }
                         : distances[i]![j] === HINT.HIT
-                        ? { color: `#${hex}`, backgroundColor: contrastColor }
+                        ? { color: color, backgroundColor: contrastColor }
                         : { border: 0, color: contrastColor }
                     }
                   >
@@ -233,27 +236,29 @@ const Home = ({ hex }: IProps) => {
           </div>
           {/* Keyboard */}
           <div className="center max-w-xl flex-wrap gap-2">
-            {hexes.map((_hex: string, i: number) => (
+            {hexes.map((hexChar: string, i: number) => (
               <div
                 key={i}
-                onClick={() => handleKeystroke(currentRow, currentColumn, _hex)}
+                onClick={() =>
+                  handleKeystroke(currentRow, currentColumn, hexChar)
+                }
                 className={`keyboard px-2`}
-                style={{ color: `#${hex}`, backgroundColor: contrastColor }}
+                style={{ color: color, backgroundColor: contrastColor }}
               >
-                <span>{_hex}</span>
+                <span>{hexChar}</span>
               </div>
             ))}
             <div
               onClick={() => handleBackspace(currentRow, currentColumn)}
               className="keyboard px-2"
-              style={{ color: `#${hex}`, backgroundColor: contrastColor }}
+              style={{ color: color, backgroundColor: contrastColor }}
             >
               ←
             </div>
             <div
               onClick={() => handleEnter(currentRow, guesses)}
               className={`keyboard px-2 bg-${contrastColor}`}
-              style={{ color: `#${hex}`, backgroundColor: contrastColor }}
+              style={{ color: color, backgroundColor: contrastColor }}
             >
               Enter
             </div>
