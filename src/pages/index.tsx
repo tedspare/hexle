@@ -23,7 +23,7 @@ const hexes = Array(16)
   .map((_, i) => i.toString(16));
 
 // Difference between two hexadecimal numbers
-const getDistance = (guess: any, answer: any) => {
+const getDistance = (guess: string, answer: string) => {
   const distance = parseInt(guess, 16) - parseInt(answer, 16);
   return distance < 0 ? HINT.UP : distance == 0 ? HINT.HIT : HINT.DOWN;
 };
@@ -94,7 +94,10 @@ const Home = ({ hex }: IProps) => {
     // Calculate distances to correct digit
     guesses[row]?.forEach((guess, column: number) => {
       setDistances((prev) => {
-        prev[row]![column] = getDistance(guess, hex[column]);
+        prev[row]![column] = getDistance(
+          guess as string,
+          hex[column] as string
+        ); // TODO: fix type assertions
         return prev;
       });
     });
