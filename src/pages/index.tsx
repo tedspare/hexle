@@ -198,7 +198,7 @@ const Home = ({ hex }: IProps) => {
         <Favicon color={color} contrastColor={contrastColor} />
         <meta
           property="og:image"
-          content={`/api/og?bg=${color}&color=${contrastColor}`}
+          content={`/api/og?bg=${hex}&color=${contrastColor.slice(1)}`}
         />
       </Head>
       <main
