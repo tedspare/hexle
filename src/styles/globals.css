@@ -16,4 +16,9 @@
   .keyboard {
     @apply center h-12 w-10 cursor-pointer select-none rounded font-bold transition-transform hover:scale-110 lg:h-16 lg:w-14 lg:text-lg;
   }
+  @supports (-webkit-touch-callout: none) {
+    .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+  }
 }
