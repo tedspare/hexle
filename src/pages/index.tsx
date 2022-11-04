@@ -213,7 +213,7 @@ const Home = ({ hex }: IProps) => {
       <main
         style={{ backgroundColor: color }}
         className={
-          "flex h-full min-h-screen flex-col items-center overflow-y-scroll webkit-full-height"
+          "webkit-full-height flex h-full min-h-screen flex-col items-center overflow-y-scroll"
         }
       >
         {/* Header with title and info */}
