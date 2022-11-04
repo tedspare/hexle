@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
-import Favicon from "../components/favicon";
 
 // Constants
 const GRID_SIZE = 6;
@@ -48,7 +47,7 @@ const hexToRgb = (hex: string) => {
 // Determine contrast color as white or black on hex code background
 const getContrastColor = (hex: string) => {
   const { r, g, b } = hexToRgb(hex);
-  return r * 0.299 + g * 0.587 + b * 0.114 > 150 ? "black" : "white";
+  return r * 0.299 + g * 0.587 + b * 0.114 > 150 ? "#000000" : "#FFFFFF";
 };
 
 interface IProps {
@@ -195,7 +194,17 @@ const Home = ({ hex }: IProps) => {
       <Head>
         <title>Hexle</title>
         <meta name="description" content="Guess the hex code from a color" />
-        <Favicon color={color} contrastColor={contrastColor} />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link
+          rel="shortcut icon"
+          type="image/png"
+          href={`/api/favicon?bg=${hex}&color=${contrastColor.slice(1)}`}
+        />
+        <link
+          rel="apple-touch-icon"
+          type="image/png"
+          href={`/api/favicon?bg=${hex}&color=${contrastColor.slice(1)}`}
+        />
         <meta
           property="og:image"
           content={`/api/og?bg=${hex}&color=${contrastColor.slice(1)}`}
@@ -228,7 +237,9 @@ const Home = ({ hex }: IProps) => {
                 <div
                   key={`${i}-${j}`}
                   className={`center h-8 w-8 border-2 ${
-                    contrastColor === "black" ? "border-black" : "border-white"
+                    contrastColor === "#000000"
+                      ? "border-black"
+                      : "border-white"
                   } font-bold`}
                   style={
                     isActive(i, j)

@@ -31,7 +31,7 @@ export default function handler(req: NextRequest) {
         >
           <div
             style={{
-              fontSize: 300,
+              fontSize: 24,
               fontStyle: "normal",
               fontWeight: "bold",
               color: color,
@@ -43,8 +43,8 @@ export default function handler(req: NextRequest) {
         </div>
       ),
       {
-        width: 1200,
-        height: 630,
+        width: 32,
+        height: 32,
       }
     );
   } catch (e: any) {
