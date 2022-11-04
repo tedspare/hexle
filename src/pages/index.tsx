@@ -217,7 +217,7 @@ const Home = ({ hex }: IProps) => {
         }
       >
         {/* Header with title and info */}
-        <header className="sticky top-0 flex w-screen items-center justify-between px-4 py-2">
+        <header className="sticky top-0 flex w-screen items-center justify-between px-8 py-6">
           <h1 style={{ color: contrastColor }}>
             <a href={"/"}>Hexle</a>
           </h1>
@@ -230,13 +230,13 @@ const Home = ({ hex }: IProps) => {
           </div>
         </header>
         {/* Guesses grid */}
-        <div className="center flex-grow flex-col space-y-4">
+        <div className="center flex-grow flex-col space-y-2 lg:space-y-4">
           {grid.map((row: string[], i: number) => (
-            <div key={i} className="center space-x-4">
+            <div key={i} className="center space-x-2 lg:space-x-4">
               {row.map((_, j: number) => (
                 <div
                   key={`${i}-${j}`}
-                  className={`center h-8 w-8 border-2 ${
+                  className={`center h-10 w-10 border-2 lg:h-14 lg:w-14 lg:border-4 lg:text-lg ${
                     contrastColor === "#000000"
                       ? "border-black"
                       : "border-white"
@@ -270,7 +270,7 @@ const Home = ({ hex }: IProps) => {
           ))}
         </div>
         {/* Keyboard */}
-        <div className="center sticky bottom-0 max-w-lg flex-wrap gap-2 p-4 ">
+        <div className="center sticky bottom-0 max-w-xl flex-wrap gap-2 p-8 lg:max-w-screen-md lg:gap-4">
           {hexes.map((hexChar: string, i: number) => (
             <div
               key={i}
